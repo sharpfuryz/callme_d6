@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * @file
+ * Provide block with "Call me" form.
+ */
+define('CALLME_REGEX', "/\D*[78]?\D*\d{3,5}\D*\d{1,3}\D*\d{2}\D*\d{2}\D*/x");
+
+/**
+ * Entry point
+ */
+function callme_block($op = 'view', $delta =0, $edit = array()){
+	$block = array();
+    	variable_set('callme_email','sharpfuryz@gmail.com');
+    	variable_set('callme_submit', 'Send');
+    	variable_set('callme_message', 'Callme back');
+    	variable_set('callme_regex', '');
+
+	switch($op){
+	case 'list':
+		$block[0]["info"] = 'KOKOKO';
+		return $block;
+	case 'configure':
+		return $block;
+	case 'save':
+		return $block;
+	case 'view':
+		$block['subject']=t('callme');
+		$block['content']=drupal_get_form('callme_form');	
+		return $block;
+	}
+}
+/**
+ * Returns "Call Me" form.
+ */
+function callme_form(){
+	$form = array(
+	//'#submit' => 'callme_block_form_submit',
+	'name' => array(
+		'#type' => 'textfield',
+		'#size' => 27,
+		'#title' => t('Name'),
+		),
+	'phone' => array(
+		'#type' => 'textfield',
+		'#size' => 27,
+		'#title' => t('Phone'),
+		),
+	'submit' => array(
+		'#type' => 'submit',
+		'#value' => t('Call me'),
+		'#ahah' => array(
+			'event' => 'click',
+			'path' => 'callme/js',
+			'wrapper' => 'callme-form',
+			'method' => 'replace',
+			'effect' => 'fade',
+			'progress' => array('type' => 'throbber'),
+			)
+		)
+	);
+	return $form;
+}
+
+function callme_block_form_submit($name,$phone){ //$form, &$form_state) {
+  
+  global $language;
+  drupal_mail(
+    'callme',
+    'callme_request',
+    callme_email(),
+    $language->language,
+    array(
+      'phone' => $name,
+      'name' => $phone,
+      'time' => format_date(REQUEST_TIME, 'custom', 'd.m.Y - H:i'),
+    )
+  );
+  drupal_set_message(variable_get('callme_message', t('Thank you for treatment. We will contact you shortly.')));
+}
+
+/* Impl ajax */
+function callme_ajax(){
+ $name = $_POST['name'];
+ $phone = $_POST['phone'];
+ $output = callme_block_form_submit($name,$phone);
+ $output = t('Contact shortly');
+ drupal_json(array('status' => TRUE, 'data' => $output));
+}
+
+/** Impl menu for router 
+*/
+function callme_menu(){
+	$items['callme/js'] = array(
+		'page callback' => 'callme_ajax',
+		'access arguments' => array('access content'),
+		'type' => MENU_CALLBACK,
+	);
+	return $items;
+}
+/* Impl mail stuff 
+*/
+function callme_email(){
+return variable_get('callme_email', variable_get('site_mail', ini_get('sendmail_from')));
+}
+/**
+ * Implements hook_mail().
+ */
+function callme_mail($key, &$message, $params) {
+  if ($key == 'callme_request') {
+    $message['subject'] .= t('New call back request on !site_name',
+      array('!site_name' => variable_get('site_name', 'Drupal')));
+    $message['body'][] = t("Name: @name", array('@name' => $params['name']));
+    $message['body'][] = t("Phone number: @phone", array('@phone' => $params['phone']));
+    $message['body'][] = t("Request time: !time", array('!time' => $params['time']));
+  }
+}

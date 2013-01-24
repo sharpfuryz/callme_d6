@@ -1,0 +1,5 @@
+callme: Obratnya svyaz
+Call me: Otpravit' zapros
+Name: Imya
+Phone: Nomer Telephona
+Contact shortly: S vami svyzutsya
