@@ -118,7 +118,7 @@ function callme_mail($key, &$message, $params) {
       array('!site_name' => variable_get('site_name', 'Drupal')));
     $message['body'][] = t("Name: @name", array('@name' => $params['name']));
     $message['body'][] = t("Phone number: @phone", array('@phone' => $params['phone'])); 
-    $message['body'][] = t("Comment: @ccmnt", array('@phone' => $params['comment']));
+    $message['body'][] = t("Comment: @ccmnt", array('@ccmnt' => $params['comment']));
     $message['body'][] = t("Request time: !time", array('!time' => $params['time']));
   }
 }
