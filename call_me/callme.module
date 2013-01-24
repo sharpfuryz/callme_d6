@@ -74,8 +74,8 @@ function callme_block_form_submit($name,$phone,$comment){ //$form, &$form_state)
     callme_email(),
     $language->language,
     array(
-      'phone' => $name,
-      'name' => $phone,
+      'phone' => $phone,
+      'name' => $name,
       'comment' => $comment,
       'time' => format_date(REQUEST_TIME, 'custom', 'd.m.Y - H:i'),
     )
