@@ -22,10 +22,11 @@ function callmeShowForm(){ //скрываем и показываем форму
 }
 
 function sendMail() {
-var name = $('#callmeform #name').val();
-var phone = $('#callmeform #phone').val();
-var ccmnt = $('#callmeform #ccmnt').val();
-$.post('?q=callme/js', {name: name, phone: phone, ccmnt: ccmnt},function(data){
+f_name = $('#callmeform #name').val();
+f_phone = $('#callmeform #phone').val();
+f_ccmnt = $('#callmeform #ccmnt').val();
+
+$.post('?q=callme/js', {name: f_name, phone: f_phone, ccmnt: f_ccmnt},function(data){
 	var text = "<div class='c_success'>Okay</div>";
 	$('#callme_result').html(text);
 	$('#callmeform .btn').attr("disabled","disabled");
