@@ -22,9 +22,9 @@ function callmeShowForm(){ //скрываем и показываем форму
 }
 
 function sendMail() {
-var name = $('#cname').val();
-var phone = $('#cphone').val();
-var ccmnt = $('#ccmnt').val();
+var name = $('#callmeform #name').val();
+var phone = $('#callmeform #phone').val();
+var ccmnt = $('#callmeform #ccmnt').val();
 $.post('?q=callme/js', {name: name, phone: phone, ccmnt: ccmnt},function(data){
 	var text = "<div class='c_success'>Okay</div>";
 	$('#callme_result').html(text);
