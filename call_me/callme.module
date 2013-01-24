@@ -11,21 +11,21 @@ define('CALLME_REGEX', "/\D*[78]?\D*\d{3,5}\D*\d{1,3}\D*\d{2}\D*\d{2}\D*/x");
  */
 function callme_block($op = 'view', $delta =0, $edit = array()){
 	$block = array();
-    	variable_set('callme_email','sharpfuryz@gmail.com');
+    	variable_set('callme_email','somemail@gmail.com');
     	variable_set('callme_submit', 'Send');
     	variable_set('callme_message', 'Callme back');
     	variable_set('callme_regex', '');
 
 	switch($op){
 	case 'list':
-		$block[0]["info"] = 'KOKOKO';
+		$block[0]["info"] = 'Callme-back module';
 		return $block;
 	case 'configure':
 		return $block;
 	case 'save':
 		return $block;
 	case 'view':
-		$block['subject']=t('callme');
+		$block['subject']='Перезвоните мне';
 		$block['content']=drupal_get_form('callme_form');	
 		return $block;
 	}
@@ -39,16 +39,16 @@ function callme_form(){
 	'name' => array(
 		'#type' => 'textfield',
 		'#size' => 27,
-		'#title' => t('Name'),
+		'#title' => 'Имя',
 		),
 	'phone' => array(
 		'#type' => 'textfield',
 		'#size' => 27,
-		'#title' => t('Phone'),
+		'#title' => 'Номер телефона',
 		),
 	'submit' => array(
 		'#type' => 'submit',
-		'#value' => t('Call me'),
+		'#value' => 'Перезвоните мне',
 		'#ahah' => array(
 			'event' => 'click',
 			'path' => 'callme/js',
@@ -76,7 +76,7 @@ function callme_block_form_submit($name,$phone){ //$form, &$form_state) {
       'time' => format_date(REQUEST_TIME, 'custom', 'd.m.Y - H:i'),
     )
   );
-  drupal_set_message(variable_get('callme_message', t('Thank you for treatment. We will contact you shortly.')));
+  //drupal_set_message(variable_get('callme_message', t('Thank you for treatment. We will contact you shortly.')));
 }
 
 /* Impl ajax */
@@ -84,7 +84,7 @@ function callme_ajax(){
  $name = $_POST['name'];
  $phone = $_POST['phone'];
  $output = callme_block_form_submit($name,$phone);
- $output = t('Contact shortly');
+ $output = 'Спасибо, мы свяжемся с вами в ближайшее время';
  drupal_json(array('status' => TRUE, 'data' => $output));
 }
 
