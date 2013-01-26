@@ -5,8 +5,8 @@
  * Provide block with "Call me" form.
  */
 define('CALLME_REGEX', "/\D*[78]?\D*\d{3,5}\D*\d{1,3}\D*\d{2}\D*\d{2}\D*/x");
-drupal_add_js('modules/call_me/u_callme.js');
-drupal_add_js('modules/call_me/u_jquery.storage.js');
+drupal_add_js('modules/call_me/z_callme.js');
+drupal_add_js('modules/call_me/z_jquery.storage.js');
 drupal_add_css('modules/call_me/callme.css');
 /**
  * Entry point
@@ -116,9 +116,9 @@ function callme_mail($key, &$message, $params) {
   if ($key == 'callme_request') {
     $message['subject'] .= t('New call back request on !site_name',
       array('!site_name' => variable_get('site_name', 'Drupal')));
-    $message['body'][] = t("Name: @name", array('@name' => $params['name']));
-    $message['body'][] = t("Phone number: @phone", array('@phone' => $params['phone'])); 
-    $message['body'][] = t("Comment: @ccmnt", array('@ccmnt' => $params['comment']));
-    $message['body'][] = t("Request time: !time", array('!time' => $params['time']));
+    $message['body'][] = t("Имя: @name", array('@name' => $params['name']));
+    $message['body'][] = t("Номер телефона: @phone", array('@phone' => $params['phone'])); 
+    $message['body'][] = t("Комментарий: @ccmnt", array('@ccmnt' => $params['comment']));
+    $message['body'][] = t("Время запроса: !time", array('!time' => $params['time']));
   }
 }
